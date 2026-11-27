@@ -4,6 +4,7 @@
   "description": "SOMLITS project management: work plan, risk register, submissions, MoLFR approvals and waiting periods",
   "main": "server.js",
   "scripts": {
+    "build": "echo \"No build step: plain Node/Express app\"",
     "start": "node server.js"
   },
   "engines": {
@@ -13,5 +14,7 @@
     "better-sqlite3": "^11.10.0",
     "express": "^4.21.1",
     "multer": "^1.4.5-lts.1"
-  }
+  },
+  "private": true,
+  "license": "UNLICENSED"
 }
