@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1f5fb0"/>
+      <stop offset="0.45" stop-color="#4189dd"/>
+      <stop offset="0.78" stop-color="#9cc6f2"/>
+      <stop offset="1" stop-color="#f6d9a8"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fff8e1"/>
+      <stop offset="0.6" stop-color="#ffe9b0" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#ffe9b0" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="hillFar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7ea9d9"/>
+      <stop offset="1" stop-color="#9dbfe3"/>
+    </linearGradient>
+    <linearGradient id="hillMid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d9a866"/>
+      <stop offset="1" stop-color="#c98f4a"/>
+    </linearGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b9783a"/>
+      <stop offset="1" stop-color="#7a4a22"/>
+    </linearGradient>
+    <pattern id="dots" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.2" fill="#ffffff" opacity="0.18"/>
+    </pattern>
+  </defs>
+
+  <!-- sky -->
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <rect width="1600" height="560" fill="url(#dots)"/>
+  <circle cx="1210" cy="520" r="210" fill="url(#sun)"/>
+  <circle cx="1210" cy="520" r="72" fill="#fff6dc"/>
+
+  <!-- soft clouds -->
+  <g fill="#ffffff" opacity="0.35">
+    <ellipse cx="300" cy="170" rx="150" ry="22"/>
+    <ellipse cx="380" cy="150" rx="90" ry="20"/>
+    <ellipse cx="980" cy="120" rx="130" ry="18"/>
+    <ellipse cx="1400" cy="230" rx="110" ry="16"/>
+  </g>
+
+  <!-- distant hills -->
+  <path d="M0 600 C 180 540 320 560 470 585 C 640 612 760 530 930 548 C 1100 566 1220 600 1380 570 C 1480 552 1550 560 1600 570 L1600 900 L0 900 Z" fill="url(#hillFar)" opacity="0.9"/>
+  <!-- mid dunes -->
+  <path d="M0 668 C 220 630 380 650 560 672 C 760 696 900 640 1100 655 C 1300 670 1450 700 1600 680 L1600 900 L0 900 Z" fill="url(#hillMid)"/>
+  <!-- ground -->
+  <path d="M0 730 C 260 708 520 724 800 736 C 1080 748 1340 720 1600 732 L1600 900 L0 900 Z" fill="url(#ground)"/>
+
+  <!-- traceability path: dotted line linking the animals to a checkpoint -->
+  <path d="M120 790 C 360 760 520 805 760 780 S 1180 760 1460 742" fill="none" stroke="#ffffff" stroke-width="3" stroke-dasharray="2 12" stroke-linecap="round" opacity="0.75"/>
+  <g fill="#ffffff">
+    <circle cx="120" cy="790" r="7"/>
+    <circle cx="760" cy="780" r="7"/>
+    <circle cx="1460" cy="742" r="7"/>
+  </g>
+  <g fill="none" stroke="#ffffff" stroke-width="2" opacity="0.6">
+    <circle cx="120" cy="790" r="15"/>
+    <circle cx="760" cy="780" r="15"/>
+    <circle cx="1460" cy="742" r="15"/>
+  </g>
+
+  <!-- acacia tree (left) -->
+  <g fill="#3b2513">
+    <path d="M300 735 L306 610 L296 560 L304 558 L314 604 L322 556 L330 558 L320 612 L316 735 Z"/>
+    <path d="M308 600 L258 566 L262 560 L312 590 Z"/>
+    <path d="M318 598 L370 560 L374 566 L322 606 Z"/>
+    <ellipse cx="312" cy="548" rx="128" ry="26"/>
+    <ellipse cx="250" cy="560" rx="62" ry="15"/>
+    <ellipse cx="380" cy="556" rx="70" ry="16"/>
+  </g>
+
+  <!-- small acacia (right, far) -->
+  <g fill="#5a3a1e" opacity="0.85">
+    <path d="M1335 690 L1338 628 L1343 628 L1346 690 Z"/>
+    <ellipse cx="1340" cy="622" rx="58" ry="12"/>
+  </g>
+
+  <!-- camels -->
+  <g fill="#2d1b0d">
+    <!-- camel 1 -->
+    <g transform="translate(520 646) scale(1.15)">
+      <path d="M4 58 C 4 44 16 36 30 35 C 42 34 48 8 68 6 C 88 4 96 28 102 38 L112 40 C 120 28 126 14 134 8 L144 6 L148 12 L140 16 C 134 30 130 42 124 54 L118 60 L116 94 L110 94 L108 64 L94 66 L92 94 L86 94 L84 66 L42 66 L38 94 L32 94 L30 66 L20 64 L16 94 L10 94 L9 64 C 6 62 4 60 4 58 Z"/>
+    </g>
+    <!-- camel 2 (smaller, behind) -->
+    <g transform="translate(690 664) scale(0.9)">
+      <path d="M4 58 C 4 44 16 36 30 35 C 42 34 48 8 68 6 C 88 4 96 28 102 38 L112 40 C 120 28 126 14 134 8 L144 6 L148 12 L140 16 C 134 30 130 42 124 54 L118 60 L116 94 L110 94 L108 64 L94 66 L92 94 L86 94 L84 66 L42 66 L38 94 L32 94 L30 66 L20 64 L16 94 L10 94 L9 64 C 6 62 4 60 4 58 Z"/>
+    </g>
+  </g>
+
+  <!-- goats -->
+  <g fill="#3a2414">
+    <g transform="translate(900 712)">
+      <path d="M0 18 C 2 8 14 4 30 6 L44 4 L50 -6 L54 -4 L52 4 L58 8 L54 14 L46 14 L44 24 L42 38 L38 38 L38 26 L14 26 L12 38 L8 38 L8 24 Z"/>
+    </g>
+    <g transform="translate(968 720) scale(0.85)">
+      <path d="M0 18 C 2 8 14 4 30 6 L44 4 L50 -6 L54 -4 L52 4 L58 8 L54 14 L46 14 L44 24 L42 38 L38 38 L38 26 L14 26 L12 38 L8 38 L8 24 Z"/>
+    </g>
+    <g transform="translate(1030 708) scale(0.95)">
+      <path d="M0 18 C 2 8 14 4 30 6 L44 4 L50 -6 L54 -4 L52 4 L58 8 L54 14 L46 14 L44 24 L42 38 L38 38 L38 26 L14 26 L12 38 L8 38 L8 24 Z"/>
+    </g>
+  </g>
+
+  <!-- ear-tag markers above the animals -->
+  <g font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#ffffff">
+    <g opacity="0.9">
+      <rect x="566" y="600" width="58" height="22" rx="11" fill="#ffffff" fill-opacity="0.22" stroke="#ffffff" stroke-opacity="0.7"/>
+      <text x="595" y="615" text-anchor="middle">RFID</text>
+      <line x1="595" y1="622" x2="595" y2="640" stroke="#ffffff" stroke-opacity="0.7" stroke-width="1.5"/>
+    </g>
+    <g opacity="0.9">
+      <rect x="912" y="666" width="58" height="22" rx="11" fill="#ffffff" fill-opacity="0.22" stroke="#ffffff" stroke-opacity="0.7"/>
+      <text x="941" y="681" text-anchor="middle">RFID</text>
+      <line x1="941" y1="688" x2="941" y2="704" stroke="#ffffff" stroke-opacity="0.7" stroke-width="1.5"/>
+    </g>
+  </g>
+
+  <!-- foreground grass tufts -->
+  <g fill="#5e3a1a" opacity="0.8">
+    <path d="M60 860 l6 -26 l4 26 l6 -20 l4 20 z"/>
+    <path d="M420 870 l5 -22 l4 22 l6 -18 l4 18 z"/>
+    <path d="M1120 864 l6 -24 l4 24 l6 -18 l4 18 z"/>
+    <path d="M1500 872 l5 -22 l4 22 l6 -16 l4 16 z"/>
+  </g>
+</svg>

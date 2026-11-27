@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Management — SOMLITS</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Login -->
+  <div id="login" class="login hidden">
+    <div class="login-left">
+    <div class="login-hero">
+      <div class="login-hero-title">Somali Livestock Identification<br>and Traceability System</div>
+      <div class="login-hero-sub">Work plan · Gantt chart · Risks · Business rules · Traceability</div>
+    </div>
+    <form id="loginForm" class="login-card">
+      <div class="login-brand">
+        <div class="login-logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22"><path fill="#fff" d="M4 5h16v2H4zm0 6h10v2H4zm0 6h16v2H4z"/><circle cx="18" cy="12" r="2.4" fill="#fff"/></svg>
+        </div>
+        <div>
+          <h1>Project Management</h1>
+          <p class="muted">Sign in to continue</p>
+        </div>
+      </div>
+      <label>Username
+        <span class="field"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zm0 2c-4.4 0-8 2.2-8 5v2h16v-2c0-2.8-3.6-5-8-5z"/></svg>
+        <input name="username" autocomplete="username" required autofocus placeholder="Enter your username"></span>
+      </label>
+      <label>Password
+        <span class="field"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M17 9V7a5 5 0 0 0-10 0v2H5v12h14V9h-2zm-8-2a3 3 0 0 1 6 0v2H9V7zm3 10.5a1.75 1.75 0 1 1 0-3.5 1.75 1.75 0 0 1 0 3.5z"/></svg>
+        <input name="password" type="password" autocomplete="current-password" required placeholder="Enter your password"></span>
+      </label>
+      <button class="btn primary login-btn" type="submit">Log in</button>
+      <p id="loginErr" class="err"></p>
+      <p class="login-foot">Ministry of Livestock, Forestry and Range · AHDAA</p>
+    </form>
+    </div>
+  </div>
+
+  <!-- App -->
+  <div id="app" class="hidden shell">
+    <aside class="sidebar">
+      <div class="sb-brand">
+        <div class="sb-logo"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="#fff" d="M4 5h16v2H4zm0 6h10v2H4zm0 6h16v2H4z"/><circle cx="18" cy="12" r="2.4" fill="#fff"/></svg></div>
+        <div><div class="sb-name">Project Management</div></div>
+      </div>
+      <div class="sb-section">Overview</div>
+      <nav class="sb-nav">
+        <button class="tab active" data-tab="home"><svg class="ni" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg><span>Home</span></button>
+        <button class="tab" data-tab="workplan"><svg class="ni" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/></svg><span>Work Plan</span></button>
+        <button class="tab" data-tab="timeline"><svg class="ni" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h10M4 12h14M4 17h8"/><circle cx="18" cy="7" r="1.5"/><circle cx="20" cy="17" r="1.5"/></svg><span>Gantt Chart</span></button>
+      </nav>
+      <div class="sb-section">Registers</div>
+      <nav class="sb-nav">
+        <button class="tab" data-tab="risks"><svg class="ni" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17v.5"/></svg><span>Risk Register</span></button>
+        <button class="tab" data-tab="rules"><svg class="ni" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l3 3v15H6z"/><path d="M9 10h6M9 14h6M9 18h4"/></svg><span>Business Rules</span></button>
+        <button class="tab" data-tab="meetings"><svg class="ni" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8M12 17v4"/><circle cx="9" cy="11" r="1.6"/><circle cx="15" cy="11" r="1.6"/></svg><span>Meetings &amp; Minutes</span></button>
+        <button class="tab" data-tab="rtm"><svg class="ni" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg><span>Requirements</span></button>
+      </nav>
+      <div class="sb-section">Library</div>
+      <nav class="sb-nav">
+        <button class="tab" data-tab="docs"><svg class="ni" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Documents</span></button>
+      </nav>
+      <div class="sb-foot">
+        <div class="sb-user"><div class="sb-avatar" id="userAvatar">A</div>
+          <div class="sb-user-txt"><div id="userName"></div><span id="roleBadge" class="badge"></span></div></div>
+        <button class="sb-link" data-action="users" id="usersBtn"><svg class="ni" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-3.5 3.3-5.5 6.5-5.5s6 2 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5c2 .6 3.3 2.6 3.5 5.5"/></svg><span>Users</span></button>
+        <button class="sb-link" data-action="logout"><svg class="ni" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4h4v16h-4"/><path d="M10 8l-4 4 4 4M6 12h10"/></svg><span>Log out</span></button>
+      </div>
+    </aside>
+
+    <div class="main">
+      <div class="topbar-app">
+        <span class="tb-flag" aria-hidden="true"></span>
+        <span class="tb-title" id="projTitle">Somali Livestock Identification and Traceability System (SOMLITS)</span>
+      </div>
+      <header class="pagebar">
+        <div>
+          <h1 id="pageTitle">Home</h1>
+          <div class="pb-sub"><span id="projSub"></span>
+            <button class="btn ghost small start-btn" data-action="start-date" id="startBtn"></button></div>
+        </div>
+      </header>
+
+      <section class="kpis" id="kpis"></section>
+
+    <!-- Requirements traceability matrix -->
+    <section id="tab-rtm" class="tabpane hidden">
+      <div class="risk-top" id="rtmTop"></div>
+      <div class="toolbar">
+        <input id="rtSearch" type="search" placeholder="Search requirements…">
+        <select id="rtModule"><option value="">All modules</option></select>
+        <select id="rtStatus"><option value="">All statuses</option></select>
+        <select id="rtGap">
+          <option value="">All requirements</option>
+          <option value="notask">Gap: no work plan task</option>
+          <option value="norule">Gap: no business rule</option>
+          <option value="notest">Gap: no test case</option>
+          <option value="fail">Test failed / blocked</option>
+          <option value="unapproved">Not yet approved by MoLFR</option>
+        </select>
+        <span class="spacer"></span>
+        <button class="btn ghost" data-action="export-rtm">Export CSV</button>
+        <button class="btn primary edit-only" data-action="add-req">+ Add requirement</button>
+      </div>
+      <div class="table-wrap" id="rtWrap"></div>
+    </section>
+
+    <!-- Business rules -->
+    <section id="tab-rules" class="tabpane hidden">
+      <div class="risk-top" id="ruleTop"></div>
+      <div class="toolbar">
+        <input id="brSearch" type="search" placeholder="Search business rules…">
+        <select id="brModule"><option value="">All modules</option></select>
+        <select id="brStatus"><option value="">All statuses</option></select>
+        <select id="brPriority"><option value="">All priorities</option><option>Must</option><option>Should</option><option>Could</option></select>
+        <span class="spacer"></span>
+        <button class="btn ghost" data-action="rules-lock" id="brLockBtn">🔒 Lock</button>
+        <button class="btn ghost edit-only" data-action="rules-pw">Change password</button>
+        <button class="btn ghost" data-action="export-rules">Export CSV</button>
+        <button class="btn primary edit-only" data-action="add-rule">+ Add rule</button>
+      </div>
+      <div class="table-wrap" id="brWrap"></div>
+      <div class="br-locked hidden" id="brLocked">
+        <form id="brUnlockForm" class="br-lock-card">
+          <div class="br-lock-ic">🔒</div>
+          <h3>Business Rules are protected</h3>
+          <p class="muted">Enter the Business Rules password to view them.</p>
+          <input type="password" name="password" placeholder="Password" autocomplete="off" required>
+          <button class="btn primary" type="submit">Unlock</button>
+          <div class="br-lock-err" id="brUnlockErr"></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Process line -->
+    <section id="tab-process" class="tabpane hidden">
+      <div id="plBox">
+      <div class="toolbar">
+        <span class="hint">One line for the whole project. Click any day to see what is happening.
+          <span class="edit-only"> Drag in the orange strip under the line to mark a <b>waiting period</b>.</span></span>
+        <span class="spacer"></span>
+        <label class="inline"><input type="checkbox" id="plPlanned" checked> Planned (start / due)</label>
+        <label class="inline"><input type="checkbox" id="plActual" checked> Actual (submitted / approved / feedback)</label>
+        <label class="inline"><input type="checkbox" id="plSupport"> Support period</label>
+        <label class="inline">Zoom
+          <select id="plZoom">
+            <option value="30">Compact</option>
+            <option value="56" selected>Normal</option>
+            <option value="84">Wide</option>
+          </select>
+        </label>
+        <button class="btn ghost" data-action="pl-today">Today</button>
+      </div>
+      <div class="pl-wrap" id="plWrap"></div>
+      <div class="pl-day" id="plDay"></div>
+      </div>
+    </section>
+
+    <!-- Work plan -->
+    <!-- Meetings register & minutes -->
+    <section id="tab-meetings" class="tabpane hidden">
+      <div class="risk-top" id="mtgTop"></div>
+      <div class="toolbar">
+        <div class="seg" id="mtgView">
+          <button class="seg-btn on" data-view="list">Meetings</button>
+          <button class="seg-btn" data-view="actions">Action items</button>
+        </div>
+        <input id="mtgSearch" type="search" placeholder="Search meetings, minutes, actions…">
+        <select id="mtgType"><option value="">All types</option></select>
+        <select id="mtgStatus"><option value="">All</option><option>Planned</option><option>Held</option><option>Postponed</option><option>Cancelled</option></select>
+        <select id="mtgActFilter" class="hidden"><option value="open">Open actions</option><option value="overdue">Overdue</option><option value="done">Done</option><option value="">All actions</option></select>
+        <span class="spacer"></span>
+        <button class="btn ghost" data-action="mtg-export">Export CSV</button>
+        <button class="btn primary edit-only" data-action="mtg-add">+ New meeting</button>
+      </div>
+      <div class="table-wrap" id="mtgWrap"></div>
+    </section>
+
+    <!-- Document library -->
+    <section id="tab-docs" class="tabpane hidden">
+      <div class="doc-layout">
+        <aside class="doc-tree-panel">
+          <div class="doc-tree-head">
+            <span>Folders</span>
+            <button class="btn ghost small act-only" data-action="doc-new-folder" data-parent="">+ New</button>
+          </div>
+          <div id="docTree" class="doc-tree"></div>
+        </aside>
+        <section class="doc-main" id="docMain">
+          <div class="doc-toolbar">
+            <div class="doc-crumbs" id="docCrumbs"></div>
+            <span class="spacer"></span>
+            <input id="docSearch" type="search" placeholder="Search all documents…">
+            <button class="btn ghost" data-action="docs-lock" id="docLockBtn">🔒 Lock</button>
+            <button class="btn ghost edit-only" data-action="docs-pw">Change password</button>
+            <button class="btn ghost act-only" id="docNewSub" data-action="doc-new-folder">+ New folder</button>
+            <label class="btn primary act-only doc-upload-btn">⬆ Upload files<input type="file" id="docFileInput" multiple hidden></label>
+          </div>
+          <div class="doc-drop-hint act-only">Tip: drag files from your computer anywhere onto this panel to upload them here.</div>
+          <div id="docList" class="doc-list"></div>
+          <div class="doc-drop-overlay" id="docDrop">Drop files to upload</div>
+        </section>
+      </div>
+      <div class="br-locked hidden" id="docLocked">
+        <form id="docUnlockForm" class="br-lock-card">
+          <div class="br-lock-ic">🔒</div>
+          <h3>Documents are protected</h3>
+          <p class="muted">Enter the Documents password to open the library.</p>
+          <input type="password" name="password" placeholder="Password" autocomplete="off" required>
+          <button class="btn primary" type="submit">Unlock</button>
+          <div class="br-lock-err" id="docUnlockErr"></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Home: what is coming up -->
+    <section id="tab-home" class="tabpane">
+      <div class="toolbar">
+        <h2 class="home-title" id="homeTitle">What's coming up</h2>
+      </div>
+      <div class="home-grid simple" id="homeGrid"></div>
+      <div class="home-pl">
+        <h3 class="home-pl-title">Process line</h3>
+        <div id="homePl"></div>
+      </div>
+    </section>
+
+    <section id="tab-workplan" class="tabpane hidden">
+      <div class="toolbar">
+        <input id="wpSearch" type="search" placeholder="Search tasks, owners, deliverables…">
+        <select id="wpMs"><option value="">All milestones</option></select>
+        <select id="wpStatus"><option value="">All statuses</option></select>
+        <select id="wpType">
+          <option value="">All rows</option>
+          <option value="ahdaa">AHDAA tasks only</option>
+          <option value="molfr">MoLFR reviews &amp; inputs only</option>
+          <option value="now">📅 Planned now (per plan)</option>
+          <option value="delayed">⚠ Delayed only</option>
+          <option value="action">Needs MoLFR action</option>
+          <option value="late">Late only</option>
+          <option value="waiting">With waiting periods</option>
+        </select>
+        <span class="spacer"></span>
+        <button class="btn ghost" data-action="export-wp">Export CSV</button>
+        <button class="btn primary edit-only" data-action="add-task">+ Add task</button>
+      </div>
+      <div class="table-wrap" id="wpWrap"></div>
+    </section>
+
+    <!-- Timeline -->
+    <section id="tab-timeline" class="tabpane hidden">
+      <div class="toolbar">
+        <span class="hint edit-only">Drag across a task's row to mark a <b>waiting period</b>. Click an orange bar to edit it.</span>
+        <span class="hint view-only">Orange hatched bars show periods spent waiting (e.g. for MoLFR review).</span>
+        <span class="spacer"></span>
+        <label class="inline">Zoom
+          <select id="tlZoom">
+            <option value="3">Compact</option>
+            <option value="6" selected>Normal</option>
+            <option value="10">Wide</option>
+            <option value="16">Extra wide</option>
+          </select>
+        </label>
+        <label class="inline"><input type="checkbox" id="tlSupport"> Show support period (5 yrs)</label>
+      </div>
+      <div class="legend">
+        <span><i class="lg st-ns"></i>Not started</span>
+        <span><i class="lg st-prog"></i>In progress</span>
+        <span><i class="lg st-ip"></i>Submitted / under review</span>
+        <span><i class="lg st-done"></i>Completed / approved</span>
+        <span><i class="lg st-rw"></i>Rework</span>
+        <span><i class="lg st-late"></i>Late</span>
+        <span><i class="lg wait"></i>Waiting</span>
+        <span><i class="lg today"></i>Today</span>
+        <span>◆ Approval gate</span>
+      </div>
+      <div class="gantt-wrap" id="ganttWrap"></div>
+    </section>
+
+    <!-- Risks -->
+    <section id="tab-risks" class="tabpane hidden">
+      <div class="risk-top" id="riskTop"></div>
+      <div class="toolbar">
+        <input id="rkSearch" type="search" placeholder="Search risks…">
+        <select id="rkRating"><option value="">All ratings</option><option>High</option><option>Medium</option><option>Low</option></select>
+        <select id="rkStatus"><option value="">All statuses</option><option>Open</option><option>Monitoring</option><option>Mitigated / Closed</option></select>
+        <span class="spacer"></span>
+        <button class="btn ghost" data-action="export-risks">Export CSV</button>
+        <button class="btn primary edit-only" data-action="add-risk">+ Add risk</button>
+      </div>
+      <div class="table-wrap" id="rkWrap"></div>
+    </section>
+    </div>
+  </div>
+
+  <!-- Task update pop-up -->
+  <dialog id="taskDlg" class="task-dlg">
+    <div class="task-dlg-bar">
+      <button type="button" class="btn ghost small" data-action="task-prev" title="Previous task">‹ Prev</button>
+      <button type="button" class="btn ghost small" data-action="task-next" title="Next task">Next ›</button>
+      <span class="spacer"></span>
+      <button type="button" class="btn ghost" data-action="task-close">✕ Close</button>
+    </div>
+    <div id="taskDlgBody" class="task-dlg-body"></div>
+  </dialog>
+
+  <!-- Project start date dialog -->
+  <dialog id="startDlg">
+    <form id="startForm" method="dialog">
+      <h3>Project start date</h3>
+      <p class="muted">This is the Contract Effective Date (Week 1). Changing it moves every planned start and end date by the same number of days. Week numbers, durations and dependencies stay the same. The pre-contract rows, actual dates, approvals and waiting periods are not changed.</p>
+      <label>Start date <input type="date" name="contractDate" required></label>
+      <div id="startPreview" class="muted"></div>
+      <div class="dlg-actions">
+        <span class="spacer"></span>
+        <button type="button" class="btn ghost" id="startCancel">Cancel</button>
+        <button type="submit" class="btn primary">Apply new start date</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Meeting & minutes pop-up -->
+  <dialog id="mtgDlg" class="task-dlg">
+    <div class="task-dlg-bar">
+      <b id="mtgDlgTitle">Meeting</b>
+      <span class="spacer"></span>
+      <button type="button" class="btn ghost" data-action="mtg-print">🖨 Print / PDF minutes</button>
+      <button type="button" class="btn ghost" data-action="mtg-close">✕ Close</button>
+    </div>
+    <div id="mtgDlgBody" class="task-dlg-body"></div>
+  </dialog>
+
+  <!-- Small text / folder pickers used by the document library -->
+  <dialog id="askDlg">
+    <form id="askForm" method="dialog">
+      <h3 id="askTitle">Name</h3>
+      <label id="askLabel">Name <input name="value" id="askInput" autocomplete="off"></label>
+      <label id="askFolderWrap" class="hidden">Folder <select name="folder" id="askFolder"></select></label>
+      <div class="dlg-actions">
+        <span class="spacer"></span>
+        <button type="button" class="btn ghost" id="askCancel">Cancel</button>
+        <button type="submit" class="btn primary" id="askOk">OK</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Waiting-period dialog -->
+  <dialog id="waitDlg">
+    <form id="waitForm" method="dialog">
+      <h3>Waiting period</h3>
+      <p class="muted" id="waitTask"></p>
+      <fieldset id="waitFs">
+        <div class="grid2">
+          <label>From <input type="date" name="from" required></label>
+          <label>To <input type="date" name="to" required></label>
+        </div>
+        <label>Waiting on
+          <select name="party">
+            <option>MoLFR</option><option>AHDAA</option><option>Third party</option>
+          </select>
+        </label>
+        <label id="waitTaskWrap">Related task (optional)
+          <select name="taskId" id="waitTaskSel"></select>
+        </label>
+        <label>What are you waiting for?
+          <input name="reason" list="waitReasons" placeholder="e.g. Waiting for MoLFR review">
+          <datalist id="waitReasons">
+            <option>Waiting for MoLFR review</option>
+            <option>Waiting for MoLFR approval</option>
+            <option>Waiting for MoLFR input / data</option>
+            <option>Waiting for MoLFR comments</option>
+            <option>Waiting for supplier delivery</option>
+            <option>Waiting for customs clearance</option>
+            <option>Waiting for site / server room readiness</option>
+          </datalist>
+        </label>
+        <p class="muted" id="waitDays"></p>
+      </fieldset>
+      <div class="dlg-actions">
+        <button type="button" class="btn danger edit-only" id="waitDelete">Delete</button>
+        <span class="spacer"></span>
+        <button type="button" class="btn ghost" id="waitCancel">Close</button>
+        <button type="submit" class="btn primary edit-only" id="waitSave">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Risk dialog -->
+  <dialog id="riskDlg">
+    <form id="riskForm" method="dialog">
+      <h3 id="riskDlgTitle">Risk</h3>
+      <fieldset id="riskFs">
+        <div class="grid3">
+          <label>ID <input name="code"></label>
+          <label>Category <input name="category" list="riskCats"></label>
+          <label>Status
+            <select name="status"><option>Open</option><option>Monitoring</option><option>Mitigated / Closed</option></select>
+          </label>
+        </div>
+        <datalist id="riskCats"></datalist>
+        <label>Risk <input name="risk" required></label>
+        <div class="grid3">
+          <label>Severity (1–5) <input name="severity" type="number" min="1" max="5"></label>
+          <label>Probability (1–5) <input name="probability" type="number" min="1" max="5"></label>
+          <label>Score / Rating <output id="riskScore"></output></label>
+        </div>
+        <label>Mitigation strategy <textarea name="mitigation" rows="2"></textarea></label>
+        <label>Early-warning trigger <textarea name="trigger" rows="2"></textarea></label>
+        <label>Contingency <textarea name="contingency" rows="2"></textarea></label>
+        <div class="grid3">
+          <label>Owner <input name="owner"></label>
+          <label>Linked tasks <input name="linkedTasks"></label>
+          <label>Milestone <input name="milestone"></label>
+        </div>
+        <div class="grid2">
+          <label>Last reviewed <input name="lastReviewed" type="date"></label>
+          <label>Source <input name="source"></label>
+        </div>
+      </fieldset>
+      <div class="dlg-actions">
+        <button type="button" class="btn danger edit-only" id="riskDelete">Delete</button>
+        <span class="spacer"></span>
+        <button type="button" class="btn ghost" id="riskCancel">Close</button>
+        <button type="submit" class="btn primary edit-only">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Business rule dialog -->
+  <dialog id="ruleDlg">
+    <form id="ruleForm" method="dialog">
+      <h3 id="ruleDlgTitle">Business rule</h3>
+      <fieldset id="ruleFs">
+        <div class="grid3">
+          <label>Rule ID <input name="code"></label>
+          <label>Priority <select name="priority"><option>Must</option><option>Should</option><option>Could</option></select></label>
+          <label>Status <select name="status" id="ruleStatusSel"></select></label>
+        </div>
+        <label>Module <select name="module" id="ruleModuleSel"></select></label>
+        <label>Rule name <input name="name" required></label>
+        <label>Rule statement (what must always be true) <textarea name="statement" rows="4"></textarea></label>
+        <label>Rationale / source (policy, law, standard, report section) <input name="source"></label>
+        <div class="grid3">
+          <label>Owner <input name="owner"></label>
+          <label>Linked tasks / requirements <input name="linked" placeholder="e.g. Task 28, BRS 4.2"></label>
+          <label>Version <input name="version"></label>
+        </div>
+        <div class="grid2">
+          <label>Approved by (MoLFR) <input name="approvedBy"></label>
+          <label>Approval date <input type="date" name="approvalDate"></label>
+        </div>
+        <label>Comments / MoLFR feedback <textarea name="comments" rows="2"></textarea></label>
+        <p class="muted" id="ruleUpdated"></p>
+      </fieldset>
+      <div class="dlg-actions">
+        <button type="button" class="btn danger edit-only" id="ruleDelete">Delete</button>
+        <span class="spacer"></span>
+        <button type="button" class="btn ghost" id="ruleCancel">Close</button>
+        <button type="submit" class="btn primary" id="ruleSave">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Requirement dialog -->
+  <dialog id="reqDlg">
+    <form id="reqForm" method="dialog">
+      <h3 id="reqDlgTitle">Requirement</h3>
+      <fieldset id="reqFs">
+        <div class="grid3">
+          <label>Requirement ID <input name="code"></label>
+          <label>Priority <select name="priority"><option>Must</option><option>Should</option><option>Could</option></select></label>
+          <label>Status <select name="status" id="reqStatusSel"></select></label>
+        </div>
+        <label>Module <select name="module" id="reqModuleSel"></select></label>
+        <label>Requirement <textarea name="requirement" rows="3" required></textarea></label>
+        <label>Source (RFP / BRS / report section) <input name="source"></label>
+        <div class="grid2">
+          <label>Business rules (e.g. BR-001, BR-007) <input name="rules"></label>
+          <label>Work plan tasks (e.g. 28, 34) <input name="tasks"></label>
+          <label>Design reference (BRS section / UI screen) <input name="design"></label>
+          <label>Test cases (e.g. TC-012, UAT-04) <input name="testCases"></label>
+        </div>
+        <div class="grid2">
+          <label>Test result <select name="testResult"><option>Not tested</option><option>Pass</option><option>Fail</option><option>Blocked</option></select></label>
+          <label>Acceptance criterion <input name="acceptance"></label>
+        </div>
+        <div class="grid3">
+          <label>MoLFR approval <select name="approval"><option>Pending</option><option>Approved</option><option>Approved with comments</option><option>Rework Required</option></select></label>
+          <label>Approved by <input name="approvedBy"></label>
+          <label>Approval date <input type="date" name="approvalDate"></label>
+        </div>
+        <label>Comments / MoLFR feedback <textarea name="comments" rows="2"></textarea></label>
+        <p class="muted" id="reqUpdated"></p>
+      </fieldset>
+      <div class="dlg-actions">
+        <button type="button" class="btn danger edit-only" id="reqDelete">Delete</button>
+        <span class="spacer"></span>
+        <button type="button" class="btn ghost" id="reqCancel">Close</button>
+        <button type="submit" class="btn primary" id="reqSave">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Users dialog -->
+  <dialog id="usersDlg">
+    <div class="users-body">
+      <h3>Users &amp; permissions</h3>
+      <table class="mini"><thead><tr><th>Username</th><th>Name</th><th>Permission</th><th></th></tr></thead><tbody id="usersList"></tbody></table>
+      <form id="userForm">
+        <h4>Add user / change password</h4>
+        <p class="muted">Enter an existing username to change that user's password, name or permission.</p>
+        <div class="grid2">
+          <label>Username <input name="username" required></label>
+          <label>Display name <input name="name"></label>
+          <label>Password <input name="password" type="password" required minlength="6"></label>
+          <label>Permission
+            <select name="role"><option value="viewer">Viewer (read only)</option><option value="molfr">MoLFR (MoLFR tasks, approvals &amp; reviews)</option><option value="editor">Editor (can edit everything)</option></select>
+          </label>
+        </div>
+        <div class="dlg-actions">
+          <span class="spacer"></span>
+          <button type="button" class="btn ghost" id="usersClose">Close</button>
+          <button class="btn primary" type="submit">Save user</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>

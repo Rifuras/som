@@ -1,0 +1,247 @@
+// Requirements taken from the RFP "SO-MOF-492016-NC-RFP", Section VII – Requirements of the Traceability System.
+// [module, requirement, RFP reference, priority]
+const M = {
+  prem: 'Premises / Location Registration',
+  id: 'Livestock Identification & Registration',
+  dis: 'Disease Surveillance & Veterinary Records',
+  mov: 'Movement Tracking & Permits',
+  trade: 'Trade & Quarantine Management',
+  exp: 'Export & Slaughter Documentation',
+  sec: 'Administrative, Security & Analytics',
+  tech: 'Technical & Non-functional',
+  integ: 'Integration & Interoperability',
+  bak: 'Backup, Recovery & Scalability',
+  hw: 'Hardware, Ear Tags & Devices',
+  train: 'Training & Capacity Building',
+  help: 'Help Desk',
+  deliv: 'Deliverables & Contract',
+};
+const S = 'RFP Sec VII ';
+
+const RFP_REQS = [
+  // ---- 5.1.1 Premises / Location Registration
+  [M.prem, 'Premises identification: register permanent and temporary premises, including grazing areas, watering points, markets and quarantine stations.', S + '§5.1.1 #1', 'Should'],
+  [M.prem, 'Mobile premises management: register mobile veterinary clinics and temporary health posts, reflecting seasonal pastoralist activity.', S + '§5.1.1 #2', 'Must'],
+  [M.prem, 'Geospatial data: capture GPS coordinates and provide dynamic geospatial mapping of pastoralist routes and seasonal grazing patterns.', S + '§5.1.1 #3', 'Should'],
+  [M.prem, 'Premises ID assignment: every premises (permanent or temporary) gets a unique identifier that stays the same even when used by different groups.', S + '§5.1.1 #4', 'Should'],
+  [M.prem, 'User group registration: register user groups (clans, communities) instead of individual owners, to reflect communal land use.', S + '§5.1.1 #5', 'Must'],
+  [M.prem, 'Temporary premises: assign operational periods; deactivate / reactivate according to seasonal use.', S + '§5.1.1 #6', 'Must'],
+  [M.prem, 'Premises database management: update premises status dynamically based on seasonal availability and livestock movement.', S + '§5.1.1 #7', 'Should'],
+  [M.prem, 'Reporting: reports on seasonal livestock movements, herd distribution and disease surveillance to plan vaccination campaigns.', S + '§5.1.1 #8', 'Should'],
+  [M.prem, 'Security and access control: only authorised personnel can manage premises registrations and view movement data.', S + '§5.1.1 #9', 'Should'],
+  [M.prem, 'Field officers and community leaders can register locations on mobile devices in remote areas with poor connectivity; premises are linked to movement and ownership modules.', S + '§4.1.1', 'Must'],
+
+  // ---- 5.1.2 Animal Identification and Registration
+  [M.id, 'Support both individual and group/lot identification, with distinct tracing methods based on the level of commingling.', S + '§5.1.2 #1', 'Must'],
+  [M.id, 'Uniform, nationally recognisable numbering system for individual animals, groups and non-producer participants.', S + '§5.1.2 #2', 'Must'],
+  [M.id, 'Each animal has a unique, permanent identification number that is never reused or duplicated (ICAR standards).', S + '§5.1.2 #3', 'Must'],
+  [M.id, 'Electronic identification: support RFID compliant with ISO 11784 and ISO 11785.', S + '§5.1.2 #4', 'Should'],
+  [M.id, 'Visual tags meet readability and durability standards, with country code, animal number and optional barcode / QR code.', S + '§5.1.2 #5', 'Should'],
+  [M.id, 'RFID tags are tamper-proof, ISO/ICAR compatible and capable of real-time data capture.', S + '§5.1.2 #6', 'Must'],
+  [M.id, 'Pre-registration process includes ear-tagging equipment and biometric scanning, recording GPS coordinates of the premises.', S + '§5.1.2 #7', 'Should'],
+  [M.id, 'Registration records species, breed, owner and premises, and cross-checks existing records to prevent duplicates.', S + '§5.1.2 #8', 'Must'],
+  [M.id, 'All registration data stored securely in a centralised cloud server with automatic backups and real-time synchronisation.', S + '§5.1.2 #9', 'Must'],
+  [M.id, 'Comply with Somalia\'s legal framework for animal identification and traceability and with international data protection laws.', S + '§5.1.2 #10', 'Should'],
+  [M.id, 'Mobile tools (apps, handheld devices) for field officers to register animals on the spot without internet connectivity.', S + '§4.1.2', 'Must'],
+
+  // ---- 5.1.3 Disease Surveillance and Treatment Records
+  [M.dis, 'Provide APIs and data import routines to integrate with veterinary clinics, laboratories and field staff systems.', S + '§5.1.3 #1', 'Must'],
+  [M.dis, 'Veterinary clinics record diseases, treatments and health interventions against registered premises and animal IDs.', S + '§5.1.3 #2', 'Should'],
+  [M.dis, 'Diagnostic laboratories report test results and confirm diagnoses; samples tracked with unique IDs throughout testing.', S + '§5.1.3 #3', 'Must'],
+  [M.dis, 'Standardised format for disease and treatment records (disease, symptoms, diagnosis, treatment).', S + '§5.1.3 #4', 'Must'],
+  [M.dis, 'Field officers and CAHWs record health data on mobile devices during field visits, offline with automatic synchronisation.', S + '§5.1.3 #5', 'Must'],
+  [M.dis, 'Vaccination history per animal: vaccine type, batch number, date and administering personnel.', S + '§5.1.3 #6', 'Should'],
+  [M.dis, 'Real-time alerts to officials and stakeholders when outbreaks or positive diagnoses are reported.', S + '§5.1.3 #7', 'Should'],
+  [M.dis, 'Outbreak recording tools: geographic location, affected animals and preventive measures taken.', S + '§5.1.3 #8', 'Must'],
+  [M.dis, 'Predictive analytics to anticipate disease outbreaks from historical data and trends.', S + '§5.1.3 #9', 'Should'],
+  [M.dis, 'Disease data encrypted, with role-based access, audit logs and national/international data-protection compliance.', S + '§5.1.3 #10', 'Must'],
+
+  // ---- 5.1.4 Livestock Movement and Ownership Management
+  [M.mov, 'Record all livestock movements with animal IDs, ownership, health checks and permits for trade, grazing or slaughter.', S + '§5.1.4 #1', 'Must'],
+  [M.mov, 'Generate movement permits (origin, destination, number of animals, purpose), validated against national regulations.', S + '§5.1.4 #2', 'Should'],
+  [M.mov, 'Movement documentation: species, breed, source/destination, transport details and departure/arrival timestamps.', S + '§5.1.4 #3', 'Must'],
+  [M.mov, 'Track animals in quarantine and log health checks and inspection results at quarantine / inspection checkpoints.', S + '§5.1.4 #4', 'Must'],
+  [M.mov, 'Route tracing for long-distance transport, logging stops and disease-transmission risks.', S + '§5.1.4 #5', 'Should'],
+  [M.mov, 'Log every ownership transfer (owners, date, transaction type, animal IDs) with supporting documents attached.', S + '§5.1.4 #6', 'Must'],
+  [M.mov, 'Digital signatures by both parties to authenticate ownership transfers.', S + '§5.1.4 #7', 'Must'],
+  [M.mov, 'Register new owners with personal, farm and livestock details including GPS coordinates.', S + '§5.1.4 #8', 'Must'],
+  [M.mov, 'Chronological ownership history, including previous owners and reasons for transfer.', S + '§5.1.4 #9', 'Should'],
+  [M.mov, 'Approval workflows for movement and ownership changes that verify health certificates, compliance and IDs before approval.', S + '§5.1.4 #10', 'Must'],
+
+  // ---- 5.1.5 Livestock Trade and Quarantine Records
+  [M.trade, 'Integrate with quarantine stations: animal ID, health checks and quarantine durations on entry and exit.', S + '§5.1.5 #1', 'Must'],
+  [M.trade, 'Integrate with livestock markets to record sales, transfers and trade details centrally.', S + '§5.1.5 #2', 'Must'],
+  [M.trade, 'Identify every animal entering quarantine by RFID, ear tag or biometrics; log ID, health status and quarantine period.', S + '§5.1.5 #3', 'Must'],
+  [M.trade, 'Record health checks, disease screening results and vaccinations at quarantine stations.', S + '§5.1.5 #4', 'Must'],
+  [M.trade, 'Track quarantine entry date, length of stay, release date and health status on release.', S + '§5.1.5 #5', 'Must'],
+  [M.trade, 'Issue permits for transfer to markets or for export after quarantine, once all health requirements are met.', S + '§5.1.5 #6', 'Must'],
+  [M.trade, 'Capture market trade information: buyer and seller, price, number of animals and transaction type.', S + '§5.1.5 #7', 'Must'],
+  [M.trade, 'Log veterinary inspections at markets (health status, vaccinations, screening) before sale or transfer.', S + '§5.1.5 #8', 'Must'],
+  [M.trade, 'Synchronise quarantine and market data in real time with the central LITS database.', S + '§5.1.5 #9', 'Must'],
+  [M.trade, 'Full traceability through markets and quarantine, linking history, health records and movement data.', S + '§5.1.5 #10', 'Must'],
+  [M.trade, 'Comply with national quarantine/trade regulations and international standards (WOAH guidelines).', S + '§5.1.5 #11', 'Must'],
+  [M.trade, 'Integrate with Local Government Authorities to track animals traded in livestock markets.', S + '§4.1.5', 'Must'],
+
+  // ---- 5.1.6 Livestock Export & Slaughter Recording
+  [M.exp, 'Track all exported livestock from farm to export point, verifying health checks, vaccinations and documentation.', S + '§5.1.6 #1', 'Must'],
+  [M.exp, 'Link export permits to each export transaction, verifying health certification and destination-country requirements.', S + '§5.1.6 #2', 'Must'],
+  [M.exp, 'Record animal ID, species, breed, weight and age for all exported livestock.', S + '§5.1.6 #3', 'Must'],
+  [M.exp, 'Capture export route, transport logistics, arrival times and export facility GPS coordinates.', S + '§5.1.6 #4', 'Must'],
+  [M.exp, 'Post-export confirmation of receipt from importers and feedback on animal health on arrival.', S + '§5.1.6 #5', 'Must'],
+  [M.exp, 'Register each slaughterhouse with unique ID, GPS location, capacity and operational status.', S + '§5.1.6 #6', 'Must'],
+  [M.exp, 'Log animal ID, species, breed, weight and health condition at slaughter.', S + '§5.1.6 #7', 'Must'],
+  [M.exp, 'Verify pre-slaughter health checks, linking veterinary inspections and disease-free certificates.', S + '§5.1.6 #8', 'Must'],
+  [M.exp, 'Record slaughter date, time, method and processing details per animal.', S + '§5.1.6 #9', 'Must'],
+  [M.exp, 'Log post-mortem meat inspection (inspector, outcome) and issue certification for sale.', S + '§5.1.6 #10', 'Must'],
+  [M.exp, 'Capture meat and by-product yield and waste disposal methods.', S + '§5.1.6 #11', 'Must'],
+  [M.exp, 'Comply with national and international standards including WOAH guidelines and halal certification.', S + '§5.1.6 #12', 'Must'],
+
+  // ---- 5.2 Technical Requirements (all mandatory)
+  [M.tech, 'Cross-platform compatibility on all operating systems and devices without distortion of information or UI.', S + '§5.2 #1', 'Must'],
+  [M.tech, 'Scalable architecture (scale up and out across application, web, database and integration servers) with optimal performance.', S + '§5.2 #2', 'Must'],
+  [M.tech, 'High availability: no single point of failure; recovers from multiple component failures.', S + '§5.2 #3', 'Must'],
+  [M.tech, 'Remote manageability with custom reports on CPU, memory, disk, throughput and device alerts.', S + '§5.2 #4', 'Must'],
+  [M.tech, 'Multi-tier architecture with Active Directory and email integration and a flexible API.', S + '§5.2 #5', 'Must'],
+  [M.tech, 'Customisable, modular document-management interface.', S + '§5.2 #6', 'Must'],
+  [M.sec, 'Administrator-managed credentials and password policy (strength, periodic change alerts), confidentiality settings, threat protection, unalterable audit trails, role-based permissions (read/update/delete/post).', S + '§5.2 #7', 'Must'],
+  [M.integ, 'Seamless synchronous and asynchronous integration with existing and future back-end systems; link documents and external files.', S + '§5.2 #8', 'Must'],
+  [M.tech, 'Task management by user ID, digital forms with online approval and digital signatures, automatic pending-task alerts, dynamic rights.', S + '§5.2 #9', 'Must'],
+  [M.train, 'Comprehensive technical documentation (setup, features, backup, DR, end-user guides) plus full knowledge transfer to the client.', S + '§5.2 #10', 'Must'],
+  [M.tech, 'Notifications to relevant users and stakeholders as necessary.', S + '§5.2 #11', 'Must'],
+  [M.bak, 'Scheduled daily, weekly, remote and online backups with real-time data replication.', S + '§5.2 #12', 'Must'],
+  [M.tech, 'Multiple simultaneous user logins.', S + '§5.2 #13', 'Must'],
+  [M.tech, 'Accessible over LAN and WAN (client-server).', S + '§5.2 #14', 'Must'],
+  [M.tech, 'Runs on a relational database (e.g. MS SQL Server).', S + '§5.2 #15', 'Must'],
+  [M.train, 'Detailed operational, maintenance and online reference manuals.', S + '§5.2 #16', 'Must'],
+  [M.train, 'Train operators on daily operations and IT staff on system management and user support.', S + '§5.2 #17', 'Must'],
+  [M.tech, 'Interface with popular spreadsheet applications for ad hoc reports.', S + '§5.2 #18', 'Must'],
+  [M.sec, 'Separate access control for business applications, database administration and OS administration.', S + '§5.2 #19', 'Must'],
+  [M.tech, 'Data migration: extract, transform and load legacy data including soft copies and printed files.', S + '§5.2 #20', 'Must'],
+  [M.tech, 'Transactions in one module are visible to other relevant modules.', S + '§5.2 #21', 'Must'],
+  [M.tech, 'Modular system allowing phased implementation of further modules.', S + '§5.2 #22', 'Must'],
+  [M.tech, 'Adaptable and scalable to keep pace with changing technology.', S + '§5.2 #23', 'Must'],
+  [M.tech, 'Comprehensive work plan with task scheduling and resource allocation.', S + '§5.2 #24', 'Must'],
+  [M.help, 'Two-year warranty with option of at least three years extended support (separate agreement).', S + '§5.2 #25', 'Must'],
+  [M.help, '24/7 support during the contract via an existing helpdesk.', S + '§5.2 #26', 'Must'],
+  [M.tech, 'Valid OEM dealership / partnership agreement authorising the bid.', S + '§5.2 #27', 'Must'],
+  [M.tech, 'Source code and full solution owned by the Government; licences only for services such as cloud hosting.', S + '§5.2 #28', 'Must'],
+  [M.tech, 'User-friendly, menu-driven interface with extensive online help.', S + '§5.2 #29', 'Must'],
+  [M.tech, 'Extensive use of parameters and tables for flexibility to future changes.', S + '§5.2 #30', 'Must'],
+  [M.sec, 'Ad hoc report writer for users to customise reports.', S + '§5.2 #31', 'Must'],
+  [M.bak, 'Transaction rollback after a crash and integrity checks for data corruption.', S + '§5.2 #32', 'Must'],
+  [M.tech, 'Web-enabled, supporting XML and XHTML.', S + '§5.2 #33', 'Must'],
+  [M.integ, 'Integration with existing email services.', S + '§5.2 #34', 'Must'],
+  [M.sec, 'Analytics dashboard in every module plus an executive dashboard for senior management.', S + '§5.2 #35', 'Must'],
+  [M.tech, 'Upgrades without loss of data or user-defined fields.', S + '§5.2 #36', 'Must'],
+  [M.sec, 'Establish and assign common user profiles.', S + '§5.2 #37', 'Must'],
+  [M.tech, 'Practical and easy for stakeholders and Ministry staff doing data collection and enforcement.', S + '§5.2 #38', 'Must'],
+  [M.sec, 'Dashboards and reports monitoring performance of core functions.', S + '§5.2 #39', 'Must'],
+  [M.tech, 'Accessible on Web, Android, Windows and iOS.', S + '§5.2 #40', 'Must'],
+  [M.hw, 'Supplier provides minimum and optimal technical specifications (servers, drive space).', S + '§5.2 #41 (ICT)', 'Must'],
+  [M.train, 'Training manuals and reference materials plus full on-the-job training of designated staff.', S + '§5.2 #42 (ICT)', 'Must'],
+  [M.tech, 'Available 24/7/365 with an SLA guaranteeing 99.9% uptime.', S + '§5.2 #43 (ICT)', 'Must'],
+  [M.help, 'Supplier provides upgrades, troubleshooting and fixes as necessary.', S + '§5.2 #44 (ICT)', 'Must'],
+  [M.help, 'Help line for users to report system issues.', S + '§5.2 #45 (ICT)', 'Must'],
+  [M.integ, 'Active Directory integration for user and permission administration.', S + '§5.2 #46 (ICT)', 'Must'],
+  [M.sec, 'Track all approval transactions showing user interactions and hierarchy-based approvals.', S + '§5.2 #47 (ICT)', 'Must'],
+  [M.sec, 'Windows access-control table for security roles and database access.', S + '§5.2 #48 (ICT)', 'Must'],
+  [M.sec, 'Automatic logout after configurable idle time.', S + '§5.2 #49 (ICT)', 'Must'],
+  [M.sec, 'Time stamps on all activities.', S + '§5.2 #50 (ICT)', 'Must'],
+  [M.sec, 'Secure, unalterable audit trail of all transactions and changes.', S + '§5.2 #51 (ICT)', 'Must'],
+  [M.bak, 'Complete backups of application and database.', S + '§5.2 #52 (ICT)', 'Must'],
+
+  // ---- 5.3 General Technical Compliance
+  [M.integ, 'Seamless integration with other systems including email.', S + '§5.3 #1', 'Must'],
+  [M.tech, 'Cloud-based with business continuity, replication, backup and recovery; ready for AI, ML, blockchain and advanced analytics.', S + '§5.3 #2', 'Must'],
+  [M.bak, 'Data recovery aligned with the Ministry\'s business continuity plan.', S + '§5.3 #3', 'Must'],
+  [M.sec, 'Security certificates, Single Sign-On, protection of historical data from deletion, 24x7 availability, non-editable audit trails, secure remote access, no duplicate records.', S + '§5.3 #4', 'Must'],
+  [M.sec, 'Logical access: segregation of duties, user access levels, password controls, self-service user management with admin checks.', S + '§5.3 #5', 'Must'],
+  [M.tech, 'Automated workflows for key business processes and approvals.', S + '§5.3 #6', 'Must'],
+  [M.tech, 'Electronic document management: collaboration, digital signatures, archiving, retrieval of physical records, search.', S + '§5.3 #7', 'Must'],
+  [M.tech, 'User-definable notifications by email and SMS.', S + '§5.3 #8', 'Must'],
+  [M.tech, 'Mobile apps (iOS, Android, Windows) and web browser access.', S + '§5.3 #9', 'Must'],
+  [M.tech, 'Easily reconfigurable to changing business needs, policies and regulations; knowledge transfer; warranty starts after go-live.', S + '§5.3 #10', 'Must'],
+  [M.sec, 'Intuitive, user-friendly reporting tool.', S + '§5.3 #11', 'Must'],
+  [M.sec, 'Customisable dashboards and analytics with export/import in CSV, XML, PDF and Word.', S + '§5.3 #12', 'Must'],
+  [M.sec, 'Reports model: business rules and filters, static/dynamic/ad hoc reports, multi-queries, data from other systems, role security on reports.', S + '§5.3 #13', 'Must'],
+  [M.sec, 'Users define report criteria with fast performance.', S + '§5.3 #14', 'Must'],
+  [M.sec, 'Ad hoc reports with user-defined parameters (dates, period, transaction type) and a user-defined report menu.', S + '§5.3 #15', 'Must'],
+
+  // ---- 4.2 Data access & security
+  [M.sec, 'Encryption at rest (AES-256) for all sensitive data and PII; TLS for all data in transit.', S + '§4.2', 'Must'],
+  [M.sec, 'Multi-factor authentication for sensitive operations (e.g. approving exports, modifying health records).', S + '§4.2', 'Must'],
+  [M.sec, 'Real-time threat monitoring and an intrusion detection system alerting administrators.', S + '§4.2', 'Must'],
+
+  // ---- 4.3 / 4.6 Architecture & integration
+  [M.tech, 'Hybrid cloud, microservices architecture, mobile-first with offline data entry and real-time synchronisation.', S + '§4.3', 'Must'],
+  [M.integ, 'Open APIs to OIE/WOAH, FAO, customs and border control systems; export data in OIE/FAO-compatible formats.', S + '§4.3, §4.6', 'Must'],
+  [M.integ, 'Integrate with national veterinary/disease systems and importing countries\' tracing and quarantine systems.', S + '§4.6', 'Must'],
+
+  // ---- 4.7 / 4.8 / 4.9 Testing, backup, scale
+  [M.tech, 'Unit, integration, user acceptance, performance and load testing before go-live.', S + '§4.7', 'Must'],
+  [M.tech, 'Phased deployment: pilot regions then nationwide rollout within the contract.', S + '§4.7', 'Must'],
+  [M.bak, 'Automated daily backups stored separately, with point-in-time recovery.', S + '§4.8', 'Must'],
+  [M.bak, 'Geographically separate disaster recovery environment with real-time replication.', S + '§4.8', 'Must'],
+  [M.bak, 'Scale to over 50 million livestock: horizontal scaling and containerisation (Docker/Kubernetes).', S + '§4.9', 'Must'],
+
+  // ---- 4.5 Training & help desk
+  [M.train, 'Training materials in Somali and English: user manuals, quick start guides, video tutorials, pictorial guides for low-literacy users.', S + '§4.5', 'Must'],
+  [M.train, 'Training workshops (in-person/online), field officer training (devices, RFID readers, sync) and administrator training.', S + '§4.5', 'Must'],
+  [M.help, '24/7 helpdesk by phone, email and live chat in Somali and English, with a ticketing system and on-site field support.', S + '§4.5', 'Must'],
+
+  // ---- 6.1 – 6.5 Software, hardware, cloud, ear tags
+  [M.tech, 'Compatible with AWS, Azure and Google Cloud; hybrid deployment for components that must stay on-premise.', S + '§6.1', 'Must'],
+  [M.hw, 'On-premise servers: Windows Server 2022 / Linux, min. 12 cores, 256 GB RAM, 4 × 2 TB SSD hot-swappable, redundant PSU, primary + secondary.', S + '§6.2', 'Must'],
+  [M.hw, 'Cloud services: auto-scaling compute, load balancers, managed database, durable storage, security/compliance and monitoring tools.', S + '§6.2', 'Must'],
+  [M.hw, 'Cloud infrastructure: auto-scaling API server, highly available proxy server, secure web server, DB server with backups and DR.', S + '§6.3', 'Must'],
+  [M.hw, 'Electronic ear tags: round button 30 mm ±2 (cattle, camel), ≤ 7 g; visual flag tags ≤ 58 × 78 mm, ≤ 15 g.', S + '§6.4', 'Must'],
+  [M.hw, 'Anti-fraud locking: tags not reusable after tampering, closed female cap leaving forensic evidence; free rotation, 11–13 mm spacing.', S + '§6.4', 'Must'],
+  [M.hw, 'Full ICAR certification (§10.7 and §10.8, ≥ 2015) and EU type approval (Reg. EC 21/2004).', S + '§6.4', 'Must'],
+  [M.hw, 'Tag tests: ISO 17294-2, ISO 7724, locking ≥ 320 N (ISO 527-1); FDX-B 134.2 kHz (ISO 24631-1), activation ≤ 0.55 A/m (ISO 24631-3).', S + '§6.4', 'Must'],
+  [M.hw, 'Tag readers: 2.4" colour screen, FDX-B read distance 230 mm, Bluetooth, 4,000 memory, duplicate check, IP67 (reader) / IP68 (tablet).', S + '§6.4', 'Must'],
+  [M.hw, 'Central setup: data centre room (AC, UPS, internet), 2 database servers and 3 application servers (10 cores, 256 GB, RAID SSD).', S + '§6.5', 'Must'],
+  [M.hw, 'Field setup: 4 desktops (i7, 32 GB), 100 Android tablets (128 GB, 6 GB RAM, 9"), 300 tag applicators, 300 tag readers, UPS, internet.', S + '§6.5', 'Must'],
+  [M.hw, 'Animal tagging: 500,000 RFID microchips and 500,000 ear tags to the stated specifications; EU-standard or equivalent quality.', S + '§6.5', 'Must'],
+];
+
+// Gaps found against "SOMLITS System, Cloud & Security Requirements" (PDF IDs in the source column).
+const G = (ref, pid) => S + ref + ' · ' + pid;
+const RFP_GAP_REQS = [
+  // ---- missing
+  [M.tech, 'Cloud infrastructure fully deployed, tested and secured, supporting real-time data collection and processing.', G('§4.7, §7', 'CL-23'), 'Must'],
+  [M.tech, 'Edge servers and devices in low-connectivity areas that store data locally and synchronise when connectivity returns.', G('§4.7, §7', 'CL-24'), 'Must'],
+  [M.deliv, 'Cloud and Infrastructure Plan deliverable: cloud resources, scaling approach and performance monitoring.', G('§7', 'CL-30'), 'Must'],
+  [M.deliv, 'System Security Plan deliverable covering encryption, access control, audit and backups.', G('§7', 'S-13'), 'Must'],
+  [M.deliv, 'Cyber security risk method statement (how security risks are identified and managed).', 'RFP PDS ITP 16.2(a)(n) · S-14', 'Should'],
+  [M.sec, 'Supplier and subcontractors take all technical and organisational measures to protect IT systems and data, including business continuity, DR and security plans.', 'RFP GCC 44.1; SCC GCC 44.1 · S-15', 'Must'],
+  [M.deliv, 'System design document with data flow diagrams (DFDs), ER diagrams and UI wireframes.', G('§4.1', 'F-GEN-02'), 'Must'],
+  [M.deliv, 'Proven solution with a track record in similar settings.', 'RFP Sec VII §4 · F-GEN-04', 'Should'],
+  [M.dis, 'Early-warning reports submitted by community animal health workers (CAHWs), raising alerts for clusters or unusual deaths.', G('§4.1.3', 'F-DS-11'), 'Must'],
+  [M.exp, 'Before an export permit is issued, verify that the animals completed quarantine (where required) and are healthy.', G('§4.1.6', 'F-EX-06'), 'Must'],
+  [M.deliv, 'Describe the solution: name, origin, versions, modules and architecture.', G('§6', 'T-41'), 'Should'],
+  [M.deliv, 'Post-implementation review, formal handover of the system to MoLFR, and final adjustments based on user feedback.', G('§7', 'P-12'), 'Must'],
+  // ---- missing parts of partly-covered items
+  [M.tech, 'Hosting model: primary site on-premises at MoLFR (Mogadishu) with a cloud-based disaster recovery site.', 'RFP Sec III 2.1 · CL-02', 'Must'],
+  [M.deliv, 'Cloud hosting and telecoms priced as recurrent costs; ongoing licence fees only for such services.', 'RFP Sec VII §5.2 #28; SCC GCC 7.3 · CL-31', 'Must'],
+  [M.sec, 'Align with ICAR and IGAD guidelines in addition to WOAH (OIE) and FAO.', G('§4.1, §4.6, §5.1.5 #11', 'C-03 / F-GEN-05'), 'Must'],
+  [M.exp, 'Meet importing-country traceability and health certification standards.', G('§8', 'C-06'), 'Must'],
+  [M.tech, 'Scalable, secure, user-friendly architecture covering premises and animal ID, analysis and market data.', G('§4.1', 'F-GEN-01'), 'Must'],
+  [M.dis, 'Analyse disease spread using movement records (which premises and animals an outbreak may have reached).', G('§4.1.3, §5.1.3 #8', 'F-DS-08'), 'Must'],
+  [M.sec, 'Alerts for certificate and permit expiry (in addition to outbreak and illegal-movement alerts).', G('§7', 'F-X-09'), 'Must'],
+  [M.sec, 'The whole system (all portals, apps, forms, reports, SMS) available in Somali and English.', G('§8', 'F-X-10'), 'Must'],
+  [M.tech, 'Load testing that simulates peak trading seasons.', G('§4.7', 'T-23'), 'Must'],
+  [M.deliv, 'Free Standard Software updates during the warranty period.', 'RFP SCC GCC 23.4 · T-43', 'Must'],
+  [M.sec, 'Real-time admin monitoring dashboard: system health, movements, bottlenecks and security breaches.', G('§7', 'P-07'), 'Must'],
+  [M.deliv, 'Clarify warranty length: RFP §5.2 #25 says two years after go-live; SCC says 12 months.', 'RFP Sec VII §5.2 #25; SCC · P-09', 'Must'],
+];
+
+function buildRfpReqs(startNo, startOrder, list = RFP_REQS) {
+  const crypto = require('crypto');
+  return list.map(([module, requirement, source, priority], i) => ({
+    id: crypto.randomUUID(), order: startOrder + i, code: 'REQ-' + String(startNo + i).padStart(3, '0'),
+    module, requirement, source, priority, rules: '', tasks: '', design: '', testCases: '', testResult: 'Not tested',
+    acceptance: '', status: 'Draft', approval: 'Pending', approvedBy: '', approvalDate: '', comments: '', updated: '',
+  }));
+}
+const RFP_MODULES = [M.tech, M.integ, M.bak, M.hw, M.train, M.deliv];
+module.exports = { RFP_REQS, RFP_GAP_REQS, buildRfpReqs, RFP_MODULES };
