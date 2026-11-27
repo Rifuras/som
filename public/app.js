@@ -1045,7 +1045,7 @@ $('#startForm').addEventListener('submit', async (e) => {
 });
 
 // ------------------------------------------------------------------ process line (one straight line, every day)
-const PL = { cardW: 272, laneH: 140, bandH: 140, waitLaneH: 28, gap: 14 };
+const PL = { cardW: 272, laneH: 140, bandH: 92, waitLaneH: 28, gap: 14 };
 const DOW = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 function plRange() {
@@ -1158,7 +1158,7 @@ function renderProcess() {
   let html = '';
   // selected day + today columns
   if (S.plSel >= start && S.plSel <= end) html += `<div class="pl-sel" style="left:${x(S.plSel)}px;width:${zoom}px;height:${H}px"></div>`;
-  if (today >= start && today <= end) html += `<div class="pl-today" style="left:${x(today) + zoom / 2}px;height:${H}px"></div><div class="pl-pointer vert" style="left:${x(today) + zoom / 2}px;top:${topH + 18}px">TODAY · ${fmt(today)}</div>`;
+  if (today >= start && today <= end) html += `<div class="pl-today" style="left:${x(today) + zoom / 2}px;height:${H}px"></div>`;
 
   // cards + stems
   for (const p of placed) {
@@ -1210,8 +1210,21 @@ function renderProcess() {
   if (!S.plInit) { S.plInit = true; wrap.scrollLeft = Math.max(0, x(S.plSel) - 240); }
   else if (S.plScrollTo) { wrap.scrollLeft = Math.max(0, x(S.plScrollTo) - 240); S.plScrollTo = null; }
   else wrap.scrollLeft = sl;
+  placePlFlag();
   renderPlDay();
 }
+
+// TODAY flag pinned to the top of the box, sliding sideways with the today line
+function placePlFlag() {
+  const flag = $('#plFlag'), wrap = $('#plWrap');
+  if (!flag || !S.pl) return;
+  const today = todayISO();
+  const xLine = diffD(S.pl.start, today) * S.pl.zoom + S.pl.zoom / 2 - wrap.scrollLeft;
+  const show = xLine >= 0 && xLine <= wrap.clientWidth;
+  flag.classList.toggle('hidden', !show);
+  if (show) { flag.style.left = xLine + 'px'; flag.textContent = 'TODAY · ' + fmt(today); }
+}
+$('#plWrap').addEventListener('scroll', placePlFlag, { passive: true });
 
 function renderPlDay() {
   const d = S.plSel;

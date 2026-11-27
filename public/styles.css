@@ -812,3 +812,15 @@ tr.act-late td { background: #fff3f2; }
 .pl-pointer.vert { writing-mode: vertical-rl; transform: translate(-50%, -100%) rotate(180deg); transform-origin: center; padding: 8px 2px; letter-spacing: .06em; font-size: 11.5px; z-index: 6; border-radius: 4px; }
 .pl-pointer.vert { transform: translateX(-50%) rotate(180deg); padding: 7px 3px; }
 .pl-dlab.today { visibility: hidden; }
+
+/* fluorescent TODAY flag, pinned at the top of the process line box */
+.pl-outer { position: relative; }
+.pl-flag { position: absolute; top: 8px; transform: translateX(-50%); z-index: 20; pointer-events: none;
+  background: #39ff14; color: #08310a; font-weight: 900; font-size: 14px; letter-spacing: .08em; padding: 5px 12px; border-radius: 6px; white-space: nowrap;
+  border: 2px solid #1fd100; box-shadow: 0 0 0 3px rgba(57,255,20,.25), 0 0 18px rgba(57,255,20,.85), 0 4px 10px rgba(0,0,0,.18);
+  animation: plFlagGlow 1.6s ease-in-out infinite; }
+.pl-flag::after { content: ""; position: absolute; left: 50%; bottom: -8px; transform: translateX(-50%); border: 7px solid transparent; border-bottom: 0; border-top-color: #1fd100; }
+@keyframes plFlagGlow { 50% { box-shadow: 0 0 0 5px rgba(57,255,20,.15), 0 0 28px rgba(57,255,20,1), 0 4px 10px rgba(0,0,0,.18); } }
+.pl-today { background: #22e000; opacity: 1; width: 3px; box-shadow: 0 0 8px rgba(57,255,20,.9); }
+.pl-dlab.today { visibility: visible; }
+.pl-dlab.today .dn, .pl-dlab.today .dw, .pl-dlab.today .dm { color: #129e00 !important; font-weight: 900; }
