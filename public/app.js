@@ -1070,19 +1070,18 @@ function plEvents(start, end) {
   for (const t of sortedTasks()) {
     const name = `${t.no} ${t.task}`;
     if (planned) {
-      // label depends on today: a future date is only "planned"; it becomes due / overdue when the day arrives
+      // planned markers only for what has not happened yet; once it happens the actual event takes over
       const today = todayISO(), done = isDone(t), begun = done || t.status !== 'Not Started';
       const sd = t.plannedStart, ed = t.plannedEnd;
-      if (sd) add(sd, sd > today ? { i: '▷', cls: 'ev-plan', what: 'Planned start', name, id: t.id }
+      if (sd && !begun) add(sd, sd > today ? { i: '▷', cls: 'ev-plan', what: 'Planned start', name, id: t.id }
         : sd === today ? { i: '▶', cls: 'ev-start', what: 'Starts today', name, id: t.id }
-        : begun ? { i: '▶', cls: 'ev-start', what: 'Started', name, id: t.id }
         : { i: '▶', cls: 'ev-miss', what: 'Start missed', name, id: t.id });
-      if (ed) add(ed, done ? { i: '✓', cls: 'ev-ok', what: 'Planned end ✓', name, id: t.id }
-        : ed > today ? { i: t.gate ? '◇' : '□', cls: 'ev-plan', what: t.gate ? 'Planned gate' : 'Planned end', name, id: t.id }
+      if (ed && !done) add(ed, ed > today ? { i: t.gate ? '◇' : '□', cls: 'ev-plan', what: t.gate ? 'Planned gate' : 'Planned end', name, id: t.id }
         : ed === today ? { i: t.gate ? '◆' : '■', cls: 'ev-due', what: t.gate ? 'Gate due today' : 'Due today', name, id: t.id }
         : { i: t.gate ? '◆' : '■', cls: 'ev-late', what: 'Overdue', name, id: t.id });
     }
     if (actual) {
+      if (t.actualStart) add(t.actualStart, { i: '▶', cls: 'ev-start', what: 'Started', name, id: t.id });
       t.submissions.forEach((s) => add(s.date, { i: '📤', cls: 'ev-act', what: 'Submitted', name, id: t.id }));
       if (!t.submissions.length && t.actualCompletion) add(t.actualCompletion, { i: '✔', cls: 'ev-act', what: 'Completed', name, id: t.id });
       if (t.approvalDate && isApproved(t)) add(t.approvalDate, { i: '✅', cls: 'ev-ok', what: 'Approved by MoLFR', name, id: t.id });
