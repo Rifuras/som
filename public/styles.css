@@ -789,3 +789,21 @@ tr.act-late td { background: #fff3f2; }
 .login-card h1 { font-size: 24px; }
 .login-left { width: min(560px, 100%); }
 .login-left .login-card { width: min(440px, 100%); }
+
+/* process line: one card per task */
+.pl-card.tcard { cursor: pointer; padding: 8px 12px; border-left-width: 4px; }
+.pl-card.tcard:hover { box-shadow: 0 4px 14px rgba(20,40,80,.16); }
+.pl-tname { display: flex; align-items: center; gap: 6px; font-weight: 700; color: var(--navy); margin-bottom: 4px; min-width: 0; }
+.pl-tname > span:last-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.pl-card.tcard .pl-ev { cursor: inherit; line-height: 19px; }
+.pl-card.tcard .pl-ev b { display: inline-block; min-width: 86px; }
+.pl-card.st-done { border-left-color: #1d8a4e; }
+.pl-card.st-late { border-left-color: #c0261b; }
+.pl-card.st-miss { border-left-color: #e07b12; }
+.pl-card.st-run  { border-left-color: #2f74c4; }
+.pl-card.st-todo { border-left-color: #a3adbd; }
+.pl-card.tcard { padding: 7px 11px; font-size: 12.5px; }
+.pl-card.tcard .pl-ev { line-height: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pl-card.tcard .pl-ev b { min-width: 80px; }
+.pl-card.tcard .pl-ev b { min-width: 72px; }
+.pl-card.tcard { z-index: 5; }

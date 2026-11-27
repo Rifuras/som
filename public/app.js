@@ -1045,7 +1045,7 @@ $('#startForm').addEventListener('submit', async (e) => {
 });
 
 // ------------------------------------------------------------------ process line (one straight line, every day)
-const PL = { cardW: 270, laneH: 168, bandH: 92, waitLaneH: 28, gap: 22 };
+const PL = { cardW: 272, laneH: 140, bandH: 92, waitLaneH: 28, gap: 14 };
 const DOW = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 function plRange() {
@@ -1063,33 +1063,40 @@ function plRange() {
 }
 
 // everything that happens on each date
-function plEvents(start, end) {
-  const planned = $('#plPlanned').checked, actual = $('#plActual').checked;
-  const map = new Map();
-  const add = (d, ev) => { if (!d || d < start || d > end) return; if (!map.has(d)) map.set(d, []); map.get(d).push(ev); };
+// one card per task, hung from its start date (actual start if known, else planned start);
+// everything that happens to the task (started, submitted, completed, approved) is written on that same card
+function plTasks(start, end) {
+  const today = todayISO();
+  const out = [];
   for (const t of sortedTasks()) {
-    const name = `${t.no} ${t.task}`;
-    if (planned) {
-      // planned markers only for what has not happened yet; once it happens the actual event takes over
-      const today = todayISO(), done = isDone(t), begun = done || t.status !== 'Not Started';
-      const sd = t.plannedStart, ed = t.plannedEnd;
-      if (sd && !begun) add(sd, sd > today ? { i: '▷', cls: 'ev-plan', what: 'Planned start', name, id: t.id }
-        : sd === today ? { i: '▶', cls: 'ev-start', what: 'Starts today', name, id: t.id }
-        : { i: '▶', cls: 'ev-miss', what: 'Start missed', name, id: t.id });
-      if (ed && !done) add(ed, ed > today ? { i: t.gate ? '◇' : '□', cls: 'ev-plan', what: t.gate ? 'Planned gate' : 'Planned end', name, id: t.id }
-        : ed === today ? { i: t.gate ? '◆' : '■', cls: 'ev-due', what: t.gate ? 'Gate due today' : 'Due today', name, id: t.id }
-        : { i: t.gate ? '◆' : '■', cls: 'ev-late', what: 'Overdue', name, id: t.id });
-    }
-    if (actual) {
-      if (t.actualStart) add(t.actualStart, { i: '▶', cls: 'ev-start', what: 'Started', name, id: t.id });
-      t.submissions.forEach((s) => add(s.date, { i: '📤', cls: 'ev-act', what: 'Submitted', name, id: t.id }));
-      if (!t.submissions.length && t.actualCompletion) add(t.actualCompletion, { i: '✔', cls: 'ev-act', what: 'Completed', name, id: t.id });
-      if (t.approvalDate && isApproved(t)) add(t.approvalDate, { i: '✅', cls: 'ev-ok', what: 'Approved by MoLFR', name, id: t.id });
-      if (t.approval === 'Rework Required') add(t.approvalDate || '', { i: '↩', cls: 'ev-rw', what: 'Rework required', name, id: t.id });
-      t.reviews.forEach((r) => add(r.date, { i: '🏛', cls: 'ev-act', what: 'MoLFR feedback', name, id: t.id }));
-    }
+    const d = t.actualStart || t.plannedStart;
+    if (!d || d < start || d > end) continue;
+    const done = isDone(t), begun = done || t.status !== 'Not Started';
+    const lines = [];
+    // planned
+    if (t.plannedStart || t.plannedEnd) lines.push({ k: 'Planned', v: `${t.plannedStart ? fmt(t.plannedStart) : '—'} → ${t.plannedEnd ? fmt(t.plannedEnd) : '—'}`, cls: 'ev-plan' });
+    // start
+    if (t.actualStart) lines.push({ k: 'Started', v: fmt(t.actualStart), cls: 'ev-start' });
+    else if (begun) lines.push({ k: 'Started', v: 'yes', cls: 'ev-start' });
+    else if (t.plannedStart && t.plannedStart < today) lines.push({ k: 'Start missed', v: 'not started yet', cls: 'ev-miss' });
+    else if (t.plannedStart === today) lines.push({ k: 'Starts', v: 'today', cls: 'ev-start' });
+    else lines.push({ k: 'Not started', v: '', cls: 'ev-plan' });
+    // submitted
+    const sub = t.submissions[t.submissions.length - 1];
+    if (sub) lines.push({ k: 'Submitted', v: fmt(sub.date) + (t.submissions.length > 1 ? ` (${t.submissions.length}×)` : ''), cls: 'ev-act' });
+    // completed / due
+    if (t.actualCompletion) lines.push({ k: 'Completed', v: fmt(t.actualCompletion), cls: 'ev-ok' });
+    else if (done) lines.push({ k: 'Completed', v: 'yes', cls: 'ev-ok' });
+    else if (t.plannedEnd && t.plannedEnd < today) lines.push({ k: 'Overdue', v: 'since ' + fmt(t.plannedEnd), cls: 'ev-late' });
+    else if (t.plannedEnd === today) lines.push({ k: 'Due', v: 'today', cls: 'ev-due' });
+    else if (t.plannedEnd) lines.push({ k: 'Due', v: fmt(t.plannedEnd), cls: 'ev-plan' });
+    // MoLFR
+    if (isApproved(t)) lines.push({ k: 'Approved', v: t.approvalDate ? fmt(t.approvalDate) : 'yes', cls: 'ev-ok' });
+    else if (t.approval === 'Rework Required') lines.push({ k: 'Rework', v: t.approvalDate ? fmt(t.approvalDate) : 'required', cls: 'ev-rw' });
+    const state = done ? 'done' : (t.plannedEnd && t.plannedEnd < today) ? 'late' : (!begun && t.plannedStart && t.plannedStart < today) ? 'miss' : begun ? 'run' : 'todo';
+    out.push({ d, t, lines, state });
   }
-  return map;
+  return out.sort((x, y) => (x.d < y.d ? -1 : x.d > y.d ? 1 : 0));
 }
 function allWaits() {
   const list = (S.data.lineWaits || []).map((w) => {
@@ -1113,11 +1120,11 @@ function renderProcess() {
   S.pl = { start, zoom, totalDays };
 
   // event cards: alternate above and below the line, each side in its own lanes
-  const events = [...plEvents(start, end).entries()].sort((a, b) => (a[0] < b[0] ? -1 : 1));
+  const events = plTasks(start, end);
   const upRight = [], downRight = [];
   const freeLane = (arr, left) => { const i = arr.findIndex((r) => r + PL.gap <= left); return i < 0 ? arr.length : i; };
   let flip = false;
-  const placed = events.map(([d, evs]) => {
+  const placed = events.map(({ d, t, lines, state }) => {
     const left = x(d) + zoom / 2 - 1;
     const lu = freeLane(upRight, left), ld = freeLane(downRight, left);
     let side;
@@ -1126,7 +1133,7 @@ function renderProcess() {
     const lane = side === 'up' ? lu : ld;
     if (lane === arr.length) arr.push(0);
     arr[lane] = left + PL.cardW;
-    return { d, evs, left, lane, side };
+    return { d, t, lines, state, left, lane, side };
   });
   const upLanes = Math.max(1, upRight.length), downLanes = downRight.length;
   const topH = upLanes * PL.laneH + 10;
@@ -1157,13 +1164,12 @@ function renderProcess() {
   for (const p of placed) {
     const cardH = PL.laneH - 24;
     const top = p.side === 'up' ? topH - (p.lane + 1) * PL.laneH : belowTop + p.lane * PL.laneH + 6;
-    const max = 5;
-    const items = p.evs.slice(0, max).map((e) => `<div class="pl-ev ${e.cls}" data-action="open-task" data-id="${e.id}" title="${esc(e.what + ': ' + e.name)}"><b>${e.i} ${esc(e.what)}</b> ${esc(e.name)}</div>`).join('');
-    const more = p.evs.length > max ? `<div class="pl-more" data-action="pl-day" data-d="${p.d}">+ ${p.evs.length - max} more…</div>` : '';
+    const t = p.t;
+    const items = p.lines.map((l) => `<div class="pl-ev ${l.cls}"><b>${esc(l.k)}</b> ${esc(l.v)}</div>`).join('');
     const stem = p.side === 'up' ? `top:${top + cardH}px;height:${lineY - top - cardH}px` : `top:${lineY}px;height:${top - lineY}px`;
     html += `<div class="pl-stem ${p.side}" style="left:${p.left}px;${stem}"></div>
-      <div class="pl-card ${p.side} ${p.d === S.plSel ? 'sel' : ''}" style="left:${p.left}px;top:${top}px;width:${PL.cardW - 8}px;height:${cardH}px">
-        <div class="pl-date" data-action="pl-day" data-d="${p.d}">${DOW[toD(p.d).getUTCDay()].slice(0, 3)} ${fmt(p.d)}</div>${items}${more}</div>`;
+      <div class="pl-card tcard st-${p.state} ${p.side} ${p.d === S.plSel ? 'sel' : ''}" data-action="open-task" data-id="${t.id}" title="${esc(t.no + ' ' + t.task)}" style="left:${p.left}px;top:${top}px;width:${PL.cardW - 8}px;height:${cardH}px">
+        <div class="pl-tname">${noTag(t)}<span>${esc(t.task)}</span></div>${items}</div>`;
   }
 
   // the straight line: one tick and one date label for every day
@@ -1199,6 +1205,8 @@ function renderProcess() {
   const padTop = Math.max(0, Math.round(avail / 2 - lineY - 20));
   const padBottom = Math.max(0, Math.round(avail / 2 - (H - lineY) + 20));
   wrap.innerHTML = `<div class="pl-canvas" style="width:${W}px;height:${H + padTop + padBottom}px"><div class="pl-inner" style="top:${padTop}px;width:${W}px;height:${H}px">${html}</div></div>`;
+  if (!S.plInit || S.plVCenter) wrap.scrollTop = Math.max(0, padTop + lineY - wrap.clientHeight / 2);   // open with the line in view
+  S.plVCenter = false;
   if (!S.plInit) { S.plInit = true; wrap.scrollLeft = Math.max(0, x(S.plSel) - 240); }
   else if (S.plScrollTo) { wrap.scrollLeft = Math.max(0, x(S.plScrollTo) - 240); S.plScrollTo = null; }
   else wrap.scrollLeft = sl;
@@ -1239,7 +1247,7 @@ function renderPlDay() {
     </div>`;
 }
 
-['#plPlanned', '#plActual', '#plSupport', '#plZoom'].forEach((s) => $(s).addEventListener('change', () => { S.plScrollTo = S.plSel; renderProcess(); }));
+['#plSupport', '#plZoom'].forEach((s) => $(s).addEventListener('change', () => { S.plScrollTo = S.plSel; renderProcess(); }));
 
 // click a day / drag a waiting period
 let plDrag = null;
