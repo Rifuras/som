@@ -775,3 +775,17 @@ tr.act-late td { background: #fff3f2; }
 .ev-plan b { color: #64748b; font-weight: 600; }
 .ev-late b { color: #c0261b; }
 .ev-miss b { color: #c2610c; }
+
+/* ---------- login: centred card ---------- */
+.login { justify-content: center; align-items: center; padding: 32px 20px; background-position: center; }
+.login::before { background: radial-gradient(ellipse at center, rgba(10,30,60,.35) 0%, rgba(10,30,60,.60) 75%); }
+.login-left { margin: 0 auto !important; width: min(440px, 100%); align-items: center; gap: 22px; }
+.login-left .login-hero { text-align: center; max-width: 520px; width: 100%; }
+.login-left .login-hero-title { font-size: clamp(24px, 2.4vw, 32px); }
+.login-left .login-hero-sub { font-size: 15px; margin-top: 8px; }
+.login-left .login-card { width: 100%; padding: 32px 34px 22px; border-radius: 20px; background: rgba(255,255,255,.92); }
+.login-brand { flex-direction: column; text-align: center; gap: 10px; margin-bottom: 10px; }
+.login-logo { width: 52px; height: 52px; border-radius: 14px; }
+.login-card h1 { font-size: 24px; }
+.login-left { width: min(560px, 100%); }
+.login-left .login-card { width: min(440px, 100%); }
