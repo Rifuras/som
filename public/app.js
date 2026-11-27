@@ -1713,7 +1713,7 @@ function fileIcon(name, mime) {
   if (['dwg', 'dxf'].includes(ext)) return ['CAD', '#0e7490'];
   return [ext ? ext.slice(0, 4).toUpperCase() : 'FILE', '#64748b'];
 }
-const canPreview = (name, mime) => /\.(pdf|png|jpe?g|gif|webp|svg|txt)$/i.test(name) || /^image\//.test(mime || '');
+const canPreview = (name) => /\.(pdf|png|jpe?g|gif|webp|txt)$/i.test(name);
 
 function renderDocs() {
   const locked = !!S.data.docsLocked;

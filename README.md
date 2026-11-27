@@ -45,3 +45,14 @@ Everything is stored in the `data/` folder:
 To back up, stop the server and copy the `data/` folder (or use `sqlite3 data/somplanner.db ".backup backup.db"` while it runs). You can open the database with any SQLite tool, e.g. DB Browser for SQLite. To start again from the PDF data, stop the server and delete `data/`.
 
 To use a different port: `PORT=8080 npm start`.
+
+## Server settings (environment variables)
+
+| Variable | Purpose |
+|---|---|
+| `PORT` | Port to listen on (default 3000) |
+| `DATA_DIR` | Folder for the database and uploads; use a persistent disk on a server |
+| `RULES_PASSWORD` / `DOCS_PASSWORD` | Business Rules / Documents section passwords for a new database |
+| `TRUST_PROXY` | Set to `1` when running behind a reverse proxy / load balancer, so login limits see real client addresses |
+
+Change the default user passwords after the first login. Logins lock for 5 minutes after 5 wrong tries for a username (20 from one address).

@@ -233,7 +233,7 @@ function parseCookies(req) {
   const out = {};
   (req.headers.cookie || '').split(';').forEach((p) => {
     const i = p.indexOf('=');
-    if (i > 0) out[p.slice(0, i).trim()] = decodeURIComponent(p.slice(i + 1).trim());
+    if (i > 0) { try { out[p.slice(0, i).trim()] = decodeURIComponent(p.slice(i + 1).trim()); } catch { /* ignore bad cookie */ } }
   });
   return out;
 }
@@ -316,22 +316,58 @@ const publicUser = (u) => ({ username: u.username, name: u.name, role: u.role })
 
 // ---------------------------------------------------------------- app
 const app = express();
+app.disable('x-powered-by');
+if (process.env.TRUST_PROXY) app.set('trust proxy', process.env.TRUST_PROXY === 'true' ? true : process.env.TRUST_PROXY);
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('Content-Security-Policy', "frame-ancestors 'self'");
+  res.setHeader('Referrer-Policy', 'same-origin');
+  if (isHttps(req)) res.setHeader('Strict-Transport-Security', 'max-age=15552000');
+  next();
+});
 app.use(express.json({ limit: '2mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Login throttling: 5 wrong tries for a username, or 20 from one address -> locked for 5 minutes
+const loginFails = new Map();   // key -> { n, until }
+const loginMax = (k) => (k.startsWith('ip:') ? 20 : 5), LOGIN_LOCK_MS = 5 * 60 * 1000;
+setInterval(() => { const t = Date.now(); for (const [k, f] of loginFails) if (f.until < t && t - f.last > LOGIN_LOCK_MS) loginFails.delete(k); }, 10 * 60 * 1000).unref();
+function loginBlocked(keys) {
+  const t = Date.now();
+  return Math.max(0, ...keys.map((k) => { const f = loginFails.get(k); return f && f.until > t ? f.until - t : 0; }));
+}
+function loginFailed(keys) {
+  const t = Date.now();
+  for (const k of keys) {
+    const f = loginFails.get(k) || { n: 0, until: 0, last: 0 };
+    if (t - f.last > LOGIN_LOCK_MS) f.n = 0;
+    f.n++; f.last = t;
+    if (f.n >= loginMax(k)) { f.until = t + LOGIN_LOCK_MS; f.n = 0; }
+    loginFails.set(k, f);
+  }
+}
+function isHttps(req) { return req.secure || String(req.headers['x-forwarded-proto'] || '').split(',')[0].trim() === 'https'; }
+const cookieFlags = (req) => 'HttpOnly; SameSite=Lax; Path=/' + (isHttps(req) ? '; Secure' : '');
+
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body || {};
-  const u = db.users.find((x) => x.username === String(username || '').trim().toLowerCase());
-  if (!u || !checkPassword(password, u.password)) return res.status(401).json({ error: 'Wrong username or password' });
+  const name = String(username || '').trim().toLowerCase();
+  const keys = ['u:' + name, 'ip:' + req.ip];
+  const wait = loginBlocked(keys);
+  if (wait) return res.status(429).json({ error: `Too many wrong tries. Try again in ${Math.ceil(wait / 60000)} minute${wait > 60000 ? 's' : ''}.` });
+  const u = db.users.find((x) => x.username === name);
+  if (!u || !checkPassword(password, u.password)) { loginFailed(keys); return res.status(401).json({ error: 'Wrong username or password' }); }
+  keys.forEach((k) => loginFails.delete(k));
   const token = crypto.randomBytes(32).toString('hex');
   sessions.set(token, u.username, Date.now() + SESSION_MS);
-  res.setHeader('Set-Cookie', `sid=${token}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${SESSION_MS / 1000}`);
+  res.setHeader('Set-Cookie', `sid=${token}; ${cookieFlags(req)}; Max-Age=${SESSION_MS / 1000}`);
   res.json(publicUser(u));
 });
 app.post('/api/logout', (req, res) => {
   const tok = parseCookies(req).sid;
   if (tok) { sessions.delete(tok); rulesLock.unlocked.delete(tok); docsLock.unlocked.delete(tok); }
-  res.setHeader('Set-Cookie', 'sid=; HttpOnly; SameSite=Lax; Path=/; Max-Age=0');
+  res.setHeader('Set-Cookie', `sid=; ${cookieFlags(req)}; Max-Age=0`);
   res.json({ ok: true });
 });
 app.get('/api/me', auth, (req, res) => res.json(publicUser(req.user)));
@@ -837,6 +873,8 @@ app.delete('/api/folders/:id', auth, editor, docsGate, (req, res) => {
   res.json({ ok: true });
 });
 
+const SAFE_INLINE = { '.pdf': 'application/pdf', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',
+  '.gif': 'image/gif', '.webp': 'image/webp', '.txt': 'text/plain; charset=utf-8' };
 const libUpload = multer({
   storage: multer.diskStorage({
     destination: LIB_DIR,
@@ -864,9 +902,12 @@ app.post('/api/folders/:id/files', auth, editorOrMolfr, docsGate, libUpload.arra
 app.get('/api/files/:id', auth, docsGate, (req, res) => {
   const f = db.docFiles.find((x) => x.id === req.params.id);
   if (!f) return res.status(404).json({ error: 'File not found' });
-  if (req.query.view === '1') {   // open in the browser (PDF, images) instead of downloading
+  // open in the browser only for safe types (by extension, not the uploader's claimed type); anything else downloads
+  const safe = SAFE_INLINE[path.extname(f.name).toLowerCase()];
+  if (req.query.view === '1' && safe) {
     res.setHeader('Content-Disposition', `inline; filename*=UTF-8''${encodeURIComponent(f.name)}`);
-    return res.sendFile(path.join(LIB_DIR, f.stored), { headers: { 'Content-Type': f.mime || 'application/octet-stream' } });
+    if (safe !== 'application/pdf') res.setHeader('Content-Security-Policy', "sandbox; default-src 'none'; img-src 'self'; style-src 'unsafe-inline'");
+    return res.sendFile(path.join(LIB_DIR, f.stored), { headers: { 'Content-Type': safe } });
   }
   res.download(path.join(LIB_DIR, f.stored), f.name);
 });
@@ -1018,7 +1059,11 @@ app.delete('/api/users/:username', auth, editor, (req, res) => {
 
 app.use((err, req, res, next) => {
   console.error(err);
-  res.status(err.code === 'LIMIT_FILE_SIZE' ? 413 : 500).json({ error: err.message || 'Server error' });
+  if (err.code === 'LIMIT_FILE_SIZE') return res.status(413).json({ error: 'File too large' });
+  if (err.name === 'MulterError') return res.status(400).json({ error: 'Upload rejected: ' + err.code });
+  if (err.type === 'entity.too.large') return res.status(413).json({ error: 'Request too large' });
+  if (err.type === 'entity.parse.failed') return res.status(400).json({ error: 'Invalid request' });
+  res.status(500).json({ error: 'Server error' });
 });
 
 app.listen(PORT, () => console.log(`SOMPlanner running at http://localhost:${PORT}  (database: ${SQLITE_FILE})`));
