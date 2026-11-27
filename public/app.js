@@ -1045,7 +1045,7 @@ $('#startForm').addEventListener('submit', async (e) => {
 });
 
 // ------------------------------------------------------------------ process line (one straight line, every day)
-const PL = { cardW: 272, laneH: 140, bandH: 92, waitLaneH: 28, gap: 14 };
+const PL = { cardW: 272, laneH: 140, bandH: 140, waitLaneH: 28, gap: 14 };
 const DOW = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 function plRange() {
@@ -1158,7 +1158,7 @@ function renderProcess() {
   let html = '';
   // selected day + today columns
   if (S.plSel >= start && S.plSel <= end) html += `<div class="pl-sel" style="left:${x(S.plSel)}px;width:${zoom}px;height:${H}px"></div>`;
-  if (today >= start && today <= end) html += `<div class="pl-today" style="left:${x(today) + zoom / 2}px;height:${H}px"></div><div class="pl-pointer" style="left:${x(today) + zoom / 2}px;top:${topH - 22}px">TODAY · ${fmt(today)}<i></i></div>`;
+  if (today >= start && today <= end) html += `<div class="pl-today" style="left:${x(today) + zoom / 2}px;height:${H}px"></div><div class="pl-pointer vert" style="left:${x(today) + zoom / 2}px;top:${topH + 18}px">TODAY · ${fmt(today)}</div>`;
 
   // cards + stems
   for (const p of placed) {
