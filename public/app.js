@@ -2239,3 +2239,9 @@ function printMinutes(m) {
   </body></html>`);
   w.document.close();
 }
+
+// ---- phone: sidebar as a slide-in menu
+const closeMenu = () => document.body.classList.remove('menu-open');
+$('#menuBtn').addEventListener('click', () => document.body.classList.toggle('menu-open'));
+$('#sbBackdrop').addEventListener('click', closeMenu);
+document.querySelector('.sidebar').addEventListener('click', (e) => { if (e.target.closest('.tab, .sb-link, button')) closeMenu(); });
