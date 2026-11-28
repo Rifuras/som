@@ -281,7 +281,7 @@ function renderWorkplan() {
       else if (c.k === 'approval') v = s.approvable ? `${s.approved} / ${s.approvable} approved` : '';
       else if (c.k === 'late') v = s.late ? `${s.late} late` : '–';
       else if (c.k === 'waiting') v = s.wait || '';
-      return `<td class="${c.k === 'status' ? 'c-st ' : ''}nowrap">${esc(v)}</td>`;
+      return `<td class="${c.k === 'status' ? 'c-st ' : ''}nowrap" data-k="${c.k}">${esc(v)}</td>`;
     }).join('');
     body += `<tr class="ms-row"><td class="c-exp"></td><td class="c-no">${esc(m.id === 'PRE' ? '' : m.id)}</td><td class="c-task">${esc(m.id === 'PRE' ? m.name : `${m.id} — ${m.name}`)}</td>${msCells}</tr>`;
     for (const t of rows) {
@@ -299,7 +299,7 @@ function renderWorkplan() {
         <td class="c-exp"><button class="exp-btn" tabindex="-1">${open ? '▾' : '▸'}</button></td>
         <td class="c-no">${noTag(t)}</td>
         <td class="c-task"><div>${isNow(t) ? `<span class="now-badge" title="${esc(`Per the plan, this task should be under way now (planned ${fmt(t.plannedStart)} → ${fmt(t.plannedEnd)}). This is the schedule, not the status — see the Status column for the actual progress.`)}">📅 PLANNED NOW</span> ` : ''}${esc(t.task)}</div>${ind.length ? `<div class="ind">${ind.join('')}</div>` : ''}</td>
-        ${COLS.map((c) => `<td class="${c.cls || 'nowrap'}">${colHTML(c, t)}</td>`).join('')}
+        ${COLS.map((c) => `<td class="${c.cls || 'nowrap'}" data-k="${c.k}" data-label="${esc(c.h)}">${colHTML(c, t)}</td>`).join('')}
       </tr>`;
     }
   }

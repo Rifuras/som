@@ -893,3 +893,35 @@ tr.act-late td { background: #fff3f2; }
   .details-grid .span2, .details-grid .span3, .details-grid .span4 { grid-column: 1 / -1; }
   dialog fieldset { padding: 0; margin: 0; border: 0; min-width: 0; }
 }
+
+/* ---------- Work plan as cards on phones ---------- */
+@media (max-width: 900px) {
+  #wpWrap { overflow: visible; border: 0; background: none; box-shadow: none; max-height: none; }
+  #wpWrap table.grid, #wpWrap tbody { display: block; width: 100%; min-width: 0; }
+  #wpWrap thead { display: none; }
+  #wpWrap tr { display: block; }
+  #wpWrap td { display: none; border: 0 !important; padding: 0; position: static !important; background: none !important; white-space: normal; max-width: none; width: auto; min-width: 0; }
+  #wpWrap tr.ms-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; margin: 14px 0 8px; padding: 9px 12px; border-radius: 10px; background: #e3e9f3; }
+  #wpWrap tr.ms-row td.c-task { display: block; font-weight: 700; font-size: 15px; flex: 1 1 100%; }
+  #wpWrap tr.ms-row td[data-k="status"], #wpWrap tr.ms-row td[data-k="late"] { display: block; font-size: 12.5px; color: #4b5870; }
+  #wpWrap tr.task-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; margin: 0 0 10px; padding: 12px 14px; border: 1px solid #dfe4ec; border-radius: 12px; background: #fff; box-shadow: 0 1px 2px rgba(20,30,50,.05); }
+  #wpWrap tr.task-row.now { border-left: 4px solid #f39c12; background: #fff8ec; }
+  #wpWrap tr.task-row td.c-no { display: block; grid-column: 1 / -1; }
+  #wpWrap tr.task-row td.c-task { display: block; grid-column: 1 / -1; font-size: 15px; font-weight: 600; line-height: 1.35; }
+  #wpWrap tr.task-row td.c-task .ind { font-weight: 400; margin-top: 4px; }
+  #wpWrap tr.task-row td[data-k="status"] { display: block; grid-column: 1 / -1; }
+  #wpWrap tr.task-row td[data-k="plannedStart"], #wpWrap tr.task-row td[data-k="plannedEnd"],
+  #wpWrap tr.task-row td[data-k="actualStart"], #wpWrap tr.task-row td[data-k="actualCompletion"],
+  #wpWrap tr.task-row td[data-k="responsible"], #wpWrap tr.task-row td[data-k="approval"] { display: block; font-size: 13.5px; }
+  #wpWrap tr.task-row td[data-k="delay"]:not(:empty), #wpWrap tr.task-row td[data-k="late"]:not(:empty), #wpWrap tr.task-row td[data-k="waiting"]:not(:empty) { display: block; font-size: 13.5px; }
+  #wpWrap tr.task-row td[data-k="delay"] { grid-column: 1 / -1; }
+  #wpWrap tr.task-row td[data-label]::before { content: attr(data-label); display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .03em; color: #8390a6; margin-bottom: 1px; }
+  #wpWrap tr.task-row td[data-k="status"]::before { display: none; }
+  #wpWrap tr.task-row td:empty, #wpWrap tr.task-row td[data-k="responsible"]:empty, #wpWrap tr.task-row td[data-k="approval"]:empty { display: none; }
+  #wpWrap td .clamp { -webkit-line-clamp: unset; }
+}
+@media (max-width: 900px) {
+  #wpWrap td::after { display: none !important; }
+  #wpWrap tr.ms-row td[data-k="late"] { display: none !important; }
+}
+@media (max-width: 900px) { #wpWrap td { box-shadow: none !important; } }
